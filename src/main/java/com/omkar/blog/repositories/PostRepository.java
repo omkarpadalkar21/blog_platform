@@ -1,4 +1,4 @@
-package com.omkar.blog.domain.repositories;
+package com.omkar.blog.repositories;
 
 import com.omkar.blog.domain.entities.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
