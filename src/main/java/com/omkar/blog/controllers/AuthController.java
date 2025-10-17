@@ -4,6 +4,7 @@ import com.omkar.blog.domain.dtos.AuthResponse;
 import com.omkar.blog.domain.dtos.LoginRequest;
 import com.omkar.blog.services.AuthService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/auth")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AuthController {
     private final AuthService authService;
 
