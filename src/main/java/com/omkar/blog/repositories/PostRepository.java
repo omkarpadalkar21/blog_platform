@@ -4,7 +4,9 @@ import com.omkar.blog.domain.PostStatus;
 import com.omkar.blog.domain.entities.Category;
 import com.omkar.blog.domain.entities.Post;
 import com.omkar.blog.domain.entities.Tag;
+import com.omkar.blog.domain.entities.User;
 import com.omkar.blog.services.PostService;
+import com.omkar.blog.services.UserService;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -20,4 +22,6 @@ public interface PostRepository extends JpaRepository<Post, UUID> {
     List<Post> findAllByPostStatusAndTagsContaining(PostStatus postStatus, Tag tag);
 
     List<Post> findAllByPostStatus(PostStatus status);
+
+    List<Post> findAllByPostStatusAndAuthor(PostStatus status, User author);
 }

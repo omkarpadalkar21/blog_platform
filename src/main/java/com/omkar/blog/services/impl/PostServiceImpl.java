@@ -4,6 +4,7 @@ import com.omkar.blog.domain.PostStatus;
 import com.omkar.blog.domain.entities.Category;
 import com.omkar.blog.domain.entities.Post;
 import com.omkar.blog.domain.entities.Tag;
+import com.omkar.blog.domain.entities.User;
 import com.omkar.blog.repositories.PostRepository;
 import com.omkar.blog.services.CategoryService;
 import com.omkar.blog.services.PostService;
@@ -52,5 +53,13 @@ public class PostServiceImpl implements PostService {
         }
 
         return postRepository.findAllByPostStatus(PostStatus.PUBLISHED);
+    }
+
+    @Override
+    public List<Post> getDraftPosts(User user) {
+        return postRepository.findAllByPostStatusAndAuthor(
+                PostStatus.DRAFT,
+                user
+        );
     }
 }
