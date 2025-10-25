@@ -1,5 +1,7 @@
 package com.omkar.blog.controllers;
 
+import com.omkar.blog.domain.CreatePostRequest;
+import com.omkar.blog.domain.dtos.CreatePostRequestDto;
 import com.omkar.blog.domain.dtos.PostDto;
 import com.omkar.blog.domain.entities.Post;
 import com.omkar.blog.domain.entities.User;
@@ -7,6 +9,7 @@ import com.omkar.blog.mappers.PostMapper;
 import com.omkar.blog.services.PostService;
 import com.omkar.blog.services.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,4 +43,21 @@ public class PostController {
         List<PostDto> postDtos = draftPosts.stream().map(postMapper::toDto).toList();
         return ResponseEntity.ok(postDtos);
     }
+
+    @PostMapping
+    public ResponseEntity<PostDto> createPost(
+            @RequestBody CreatePostRequestDto createPostRequestDto,
+            @RequestBody UUID userId
+    ) {
+        User user = userService.getUserById(userId);
+        CreatePostRequest createPostRequest = postMapper.toCreatePostRequest(createPostRequestDto);
+        Post createdPost = postService.createPost(user, createPostRequest);
+        PostDto createdPostDto = postMapper.toDto(createdPost);
+
+        return new ResponseEntity<>(
+                createdPostDto,
+                HttpStatus.CREATED
+        );
+    }
+
 }

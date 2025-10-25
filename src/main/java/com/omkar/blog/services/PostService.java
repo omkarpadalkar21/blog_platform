@@ -1,5 +1,6 @@
 package com.omkar.blog.services;
 
+import com.omkar.blog.domain.CreatePostRequest;
 import com.omkar.blog.domain.entities.Post;
 import com.omkar.blog.domain.entities.User;
 
@@ -10,4 +11,6 @@ public interface PostService {
     List<Post> getAllPosts(UUID categoryId, UUID postId);
 
     List<Post> getDraftPosts(User user);
+
+    Post createPost(User user, CreatePostRequest createPostRequest);
 }
