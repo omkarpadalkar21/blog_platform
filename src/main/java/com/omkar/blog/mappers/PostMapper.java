@@ -1,8 +1,10 @@
 package com.omkar.blog.mappers;
 
 import com.omkar.blog.domain.CreatePostRequest;
+import com.omkar.blog.domain.UpdatePostRequest;
 import com.omkar.blog.domain.dtos.CreatePostRequestDto;
 import com.omkar.blog.domain.dtos.PostDto;
+import com.omkar.blog.domain.dtos.UpdatePostRequestDto;
 import com.omkar.blog.domain.entities.Post;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -15,6 +17,7 @@ public interface PostMapper {
     @Mapping(target = "tags", source = "tags")
     PostDto toDto(Post post);
 
+    CreatePostRequest toCreatePostRequest(CreatePostRequestDto dto);
 
-    CreatePostRequest toCreatePostRequest(CreatePostRequestDto createPostRequestDto);
+    UpdatePostRequest toUpdatePostRequest(UpdatePostRequestDto dto);
 }
