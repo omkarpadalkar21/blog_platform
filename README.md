@@ -50,9 +50,9 @@ src/main/java/com/omkar/blog/
    - Password encoding with BCrypt
 
 3. **Authorization**
-   - Public endpoints: Login, GET posts, categories, tags
-   - Protected endpoints: POST/UPDATE posts, drafts
-   - Role-based access control
+   - Public endpoints: Login, GET posts/categories/tags, view published posts
+   - Protected endpoints: Create/update posts, view drafts, CRUD operations on categories and tags
+   - Stateless authentication with JWT tokens
 
 4. **Custom Security Components**
    - `BlogUserDetails`: Adapts domain `User` to Spring Security's `UserDetails`
@@ -118,27 +118,47 @@ src/main/java/com/omkar/blog/
      -d '{"email":"omkar@gmail.com","password":"12345"}'
    ```
    
+   Save the token from the response.
+   
    **Get all posts** (public):
    ```bash
    curl http://localhost:8080/api/v1/posts
+   ```
+   
+   **Get your drafts** (requires authentication):
+   ```bash
+   curl http://localhost:8080/api/v1/posts/drafts \
+     -H "Authorization: Bearer YOUR_JWT_TOKEN"
+   ```
+   
+   **Create a category** (requires authentication):
+   ```bash
+   curl -X POST http://localhost:8080/api/v1/categories \
+     -H "Content-Type: application/json" \
+     -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+     -d '{"name":"Technology","description":"Tech related posts"}'
    ```
 
 ## 📝 API Endpoints
 
 ### Authentication
-- `POST /api/v1/auth/login` - Login (public)
+- `POST /api/v1/auth/login` - Login and get JWT token (public)
 
 ### Posts
 - `GET /api/v1/posts` - Get all posts (public)
-- `GET /api/v1/posts/drafts` - Get user's drafts (authenticated)
-- `POST /api/v1/posts` - Create post (authenticated)
-- `PUT /api/v1/posts/{id}` - Update post (authenticated)
+- `GET /api/v1/posts/drafts` - Get user's draft posts (authenticated)
+- `POST /api/v1/posts` - Create a new post (authenticated)
+- `PUT /api/v1/posts/{id}` - Update existing post (authenticated)
 
 ### Categories
-- `GET /api/v1/categories` - Get all categories (public)
+- `GET /api/v1/categories` - List all categories (public)
+- `POST /api/v1/categories` - Create a new category (authenticated)
+- `DELETE /api/v1/categories/{id}` - Delete a category (authenticated)
 
 ### Tags
 - `GET /api/v1/tags` - Get all tags (public)
+- `POST /api/v1/tags` - Create tags (authenticated)
+- `DELETE /api/v1/tags/{id}` - Delete a tag (authenticated)
 
 ## 🔍 Key Learning Points
 
