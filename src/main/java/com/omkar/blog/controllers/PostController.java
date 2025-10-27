@@ -50,7 +50,7 @@ public class PostController {
     @PostMapping
     public ResponseEntity<PostDto> createPost(
             @Valid @RequestBody CreatePostRequestDto createPostRequestDto,
-            @RequestBody UUID userId
+            @RequestAttribute UUID userId
     ) {
         User user = userService.getUserById(userId);
         CreatePostRequest createPostRequest = postMapper.toCreatePostRequest(createPostRequestDto);
@@ -72,5 +72,17 @@ public class PostController {
         Post updatedPost = postService.updatePost(id, updatePostRequest);
         PostDto updatedPostDto = postMapper.toDto(updatedPost);
         return ResponseEntity.ok(updatedPostDto);
+    }
+
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<PostDto> getPost(
+            @PathVariable UUID id
+    ) {
+        Post post = postService.getPost(id);
+        PostDto postDto = postMapper.toDto(post);
+
+        return ResponseEntity.ok(
+                postDto
+        );
     }
 }
