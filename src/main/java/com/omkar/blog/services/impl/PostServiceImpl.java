@@ -121,6 +121,12 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public void deletePost(UUID id) {
+        Post post = getPost(id);
+        postRepository.delete(post);
+    }
+
+    @Override
     public Post getPost(UUID id) {
         return postRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Post not found with id: " + id));

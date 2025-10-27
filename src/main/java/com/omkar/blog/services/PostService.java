@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.UUID;
 
 public interface PostService {
+    Post getPost(UUID id);
+
     List<Post> getAllPosts(UUID categoryId, UUID postId);
 
     List<Post> getDraftPosts(User user);
@@ -17,5 +19,5 @@ public interface PostService {
 
     Post updatePost(UUID id, UpdatePostRequest updatePostRequest);
 
-    Post getPost(UUID id);
+    void deletePost(UUID id);
 }
