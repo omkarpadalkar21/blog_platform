@@ -85,4 +85,11 @@ public class PostController {
                 postDto
         );
     }
+
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<Void> deletePost(
+            @PathVariable UUID id
+    ) {
+
+    }
 }
