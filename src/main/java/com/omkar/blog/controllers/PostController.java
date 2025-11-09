@@ -90,6 +90,8 @@ public class PostController {
     public ResponseEntity<Void> deletePost(
             @PathVariable UUID id
     ) {
+        postService.deletePost(id);
 
+        return ResponseEntity.noContent().build();
     }
 }

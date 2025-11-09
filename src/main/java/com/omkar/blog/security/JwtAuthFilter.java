@@ -26,8 +26,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain filterChain) throws ServletException, IOException {
+            HttpServletResponse response,
+            FilterChain filterChain) throws ServletException, IOException {
         try {
             String token = extractToken(request);
             if (token != null) {
@@ -42,8 +42,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authentication); // makes our authentication
                 // object available for the rest of the request
 
-                if (userDetails instanceof BlogUserDetails) {
-                    request.setAttribute("userId", ((BlogUserDetails) userDetails).getId());
+                if (userDetails instanceof BlogUserDetails blogUserDetails) {
+                    request.setAttribute("userId", blogUserDetails.getId());
                 }
 
             }
