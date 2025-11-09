@@ -13,6 +13,8 @@ import com.omkar.blog.services.PostService;
 import com.omkar.blog.services.TagService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,9 +32,12 @@ public class PostServiceImpl implements PostService {
     private final TagService tagService;
 
     private static final int WORDS_PER_MINUTE = 200;
+    private static final String CACHE_POSTS = "posts";
+
 
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(cacheNames = CACHE_POSTS, key = "{#categoryId, #tagId}")
     public List<Post> getAllPosts(UUID categoryId, UUID tagId) {
         if (categoryId != null && tagId != null) {
             Category category = categoryService.getCategoryById(categoryId);
@@ -93,6 +98,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
+    @CachePut(cacheNames = CACHE_POSTS,key = "{#result.category.id,#result.tags}" ) // cache the tag ids
     public Post updatePost(UUID id, UpdatePostRequest updatePostRequest) {
         Post existingPost = postRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Post not found with ID: " + id));
