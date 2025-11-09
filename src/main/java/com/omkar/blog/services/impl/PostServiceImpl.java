@@ -13,8 +13,10 @@ import com.omkar.blog.services.PostService;
 import com.omkar.blog.services.TagService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -78,6 +80,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
+    @CacheEvict(cacheNames = {CACHE_POSTS, "posts"}, allEntries = true)
     public Post createPost(User user, CreatePostRequest createPostRequest) {
         Post newPost = new Post();
         newPost.setTitle(createPostRequest.getTitle());
@@ -98,7 +101,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
-    @CachePut(cacheNames = CACHE_POSTS,key = "{#result.category.id,#result.tags}" ) // cache the tag ids
+    @CachePut(cacheNames = CACHE_POSTS, key = "#result.category.id")
     public Post updatePost(UUID id, UpdatePostRequest updatePostRequest) {
         Post existingPost = postRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Post not found with ID: " + id));
@@ -127,12 +130,18 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @Caching(evict = {
+            @CacheEvict(cacheNames = "post", key = "#id"),
+            @CacheEvict(cacheNames = CACHE_POSTS, allEntries = true)
+    })
     public void deletePost(UUID id) {
         Post post = getPost(id);
         postRepository.delete(post);
     }
 
+
     @Override
+    @Cacheable(cacheNames = "post", key = "#id")
     public Post getPost(UUID id) {
         return postRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Post not found with id: " + id));
