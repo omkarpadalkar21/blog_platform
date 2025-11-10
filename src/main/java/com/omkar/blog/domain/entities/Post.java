@@ -4,6 +4,7 @@ import com.omkar.blog.domain.PostStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
@@ -17,7 +18,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
-public class Post {
+public class Post implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
